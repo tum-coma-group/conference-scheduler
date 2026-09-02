@@ -1,0 +1,2608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Interactive Schedule Viewer</title>
+
+    <!-- SVG Icon Library -->
+    <svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <!-- Home Icon -->
+            <symbol id="icon-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </symbol>
+
+            <!-- Chart Icon -->
+            <symbol id="icon-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="20" x2="18" y2="10"></line>
+                <line x1="12" y1="20" x2="12" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="14"></line>
+            </symbol>
+
+            <!-- Alert Icon -->
+            <symbol id="icon-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </symbol>
+
+            <!-- Settings Icon -->
+            <symbol id="icon-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M12 1v6m0 6v6m6-12.99l-5.2 3m-2.6 1.5l-5.2 3M19 12h-6m-6 0H1m17.99 6L13.79 15m-2.6-1.5L6 16.5"></path>
+            </symbol>
+
+            <!-- Download Icon -->
+            <symbol id="icon-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+            </symbol>
+
+            <!-- Refresh Icon -->
+            <symbol id="icon-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <polyline points="1 20 1 14 7 14"></polyline>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+            </symbol>
+
+            <!-- Clock Icon -->
+            <symbol id="icon-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+            </symbol>
+
+            <!-- Tag Icon -->
+            <symbol id="icon-tag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                <line x1="7" y1="7" x2="7.01" y2="7"></line>
+            </symbol>
+
+            <!-- Building Icon -->
+            <symbol id="icon-building" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+                <path d="M9 22v-4h6v4M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01"></path>
+            </symbol>
+
+            <!-- Save Icon -->
+            <symbol id="icon-save" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                <polyline points="7 3 7 8 15 8"></polyline>
+            </symbol>
+
+            <!-- List Icon -->
+            <symbol id="icon-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="8" y1="6" x2="21" y2="6"></line>
+                <line x1="8" y1="12" x2="21" y2="12"></line>
+                <line x1="8" y1="18" x2="21" y2="18"></line>
+                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+            </symbol>
+
+            <!-- Check Icon -->
+            <symbol id="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </symbol>
+
+            <!-- X Icon -->
+            <symbol id="icon-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </symbol>
+
+            <!-- Lock Icon -->
+            <symbol id="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </symbol>
+        </defs>
+    </svg>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+            background: #F8FAFC;
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 250, 251, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            padding: 28px 40px;
+            margin-bottom: 32px;
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #2563EB 0%, #3B82F6 50%, #60A5FA 100%);
+        }
+
+        .header h1 {
+            color: #0F172A;
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #0F172A 0%, #334155 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: white;
+            color: #2563EB;
+            border: 2px solid #E2E8F0;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn:hover {
+            background: #F1F5F9;
+            border-color: #CBD5E1;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+        }
+
+        .btn-success {
+            background: #10B981;
+            color: white;
+            border: 2px solid #10B981;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            border-color: #059669;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+        }
+
+        .btn-primary {
+            background: #2563EB;
+            color: white;
+            border: 2px solid #2563EB;
+        }
+
+        .btn-primary:hover {
+            background: #1D4ED8;
+            border-color: #1D4ED8;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+
+        .stats-bar {
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stats-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+
+        .stat {
+            background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+            padding: 24px 28px;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            min-width: 200px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #2563EB 0%, #3B82F6 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .stat:hover {
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.12), 0 2px 6px rgba(37, 99, 235, 0.08);
+            transform: translateY(-4px);
+            border-color: rgba(37, 99, 235, 0.2);
+        }
+
+        .stat:hover::before {
+            opacity: 1;
+        }
+
+        /* Clickable stats for conflict filtering */
+        .stat.clickable {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .stat.clickable:active {
+            transform: translateY(-2px);
+        }
+
+        .stat.active {
+            background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+            border-color: #2563EB;
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.15), 0 2px 6px rgba(37, 99, 235, 0.1);
+        }
+
+        .stat.active::before {
+            opacity: 1;
+        }
+
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .stat:hover .stat-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .stat-icon.primary {
+            background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
+            color: #2563EB;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+        }
+
+        .stat-icon.error {
+            background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
+            color: #DC2626;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.15);
+        }
+
+        .stat-icon.warning {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+            color: #D97706;
+            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.15);
+        }
+
+        .stat-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            color: #0F172A;
+            font-weight: 800;
+            line-height: 1;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .btn-reset {
+            background: white;
+            color: #F59E0B;
+            border: 2px solid #F59E0B;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-reset:hover {
+            background: #F59E0B;
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+
+        .schedule-container {
+            position: relative;
+            background: #F8FAFC;
+            padding: 0;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .schedule-scroll-wrapper {
+            overflow-x: auto;
+            overflow-y: auto;
+            max-height: calc(100vh - 320px);
+            position: relative;
+        }
+
+        .schedule-scroll-wrapper::before,
+        .schedule-scroll-wrapper::after {
+            content: '';
+            position: sticky;
+            top: 0;
+            height: 100%;
+            width: 40px;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .schedule-scroll-wrapper::before {
+            left: 0;
+            background: linear-gradient(to right, rgba(248,250,252,0.9), transparent);
+        }
+
+        .schedule-scroll-wrapper::after {
+            right: 0;
+            background: linear-gradient(to left, rgba(248,250,252,0.9), transparent);
+        }
+
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: 80px repeat(12, 180px);
+            grid-auto-rows: minmax(120px, auto);
+            gap: 0;
+            min-width: fit-content;
+            padding: 16px;
+        }
+
+        .session-header {
+            font-weight: 600;
+            color: #475569;
+            padding: 12px 8px;
+            background: transparent;
+            text-align: center;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        .room-header {
+            position: sticky;
+            top: 0;
+            left: 0;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 20;
+            font-weight: 700;
+            color: #0F172A;
+            padding: 16px 12px;
+            text-align: center;
+            font-size: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border-bottom: 2px solid #E2E8F0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slot {
+            min-height: 120px;
+            height: auto;
+            max-height: none;
+            padding: 8px;
+            background: transparent;
+            transition: all 0.2s;
+            overflow: visible;
+            border-bottom: 1px solid #E2E8F0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .slot.drag-over {
+            background: #EFF6FF;
+        }
+
+        .session-card {
+            background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-left: 4px solid #CBD5E0;
+            border-radius: 12px;
+            padding: 14px 16px;
+            cursor: move;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
+            position: relative;
+            min-height: auto;
+            height: auto;
+            max-height: none;
+            overflow: visible;
+        }
+
+        .session-card::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            border-radius: 12px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(16, 185, 129, 0.1));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .session-card:hover {
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.15), 0 4px 12px rgba(0,0,0,0.08);
+            transform: translateY(-3px) scale(1.01);
+            z-index: 10;
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .session-card:hover::before {
+            opacity: 1;
+        }
+
+        .session-card.dragging {
+            opacity: 0.4;
+            transform: scale(0.98);
+        }
+
+        /* Keep these classes for badge logic but remove automatic colors */
+        .session-card.has-classification-conflict {
+            /* No automatic color */
+        }
+
+        .session-card.has-personal-conflict {
+            /* No automatic color */
+        }
+
+        /* Interactive conflict highlighting - only applied when filter is active */
+        .session-card.no-conflict {
+            border-left-color: #10B981;
+            background: rgba(16, 185, 129, 0.03);
+        }
+
+        .session-card.highlight-personal {
+            border-left-color: #DC2626;
+            background: rgba(220, 38, 38, 0.05);
+        }
+
+        .session-card.highlight-classification {
+            border-left-color: #F59E0B;
+            background: rgba(245, 158, 11, 0.05);
+        }
+
+        .session-card.highlight-personal-classification {
+            border-left-color: #9333EA;
+            background: rgba(147, 51, 234, 0.05);
+        }
+
+        .session-card.highlight-series-back-to-back {
+            border-left-color: #3B82F6;
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .session-card.highlight-series-room {
+            border-left-color: #14B8A6;
+            background: rgba(20, 184, 166, 0.05);
+        }
+
+        .session-id {
+            display: inline-block;
+            background: #EFF6FF;
+            color: #1E40AF;
+            font-weight: 700;
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            letter-spacing: 0.3px;
+        }
+
+        .session-title {
+            font-size: 13px;
+            color: #0F172A;
+            margin-bottom: 8px;
+            font-weight: 600;
+            line-height: 1.4;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal !important;
+            overflow: visible !important;
+        }
+
+        .session-details {
+            font-size: 10px;
+            color: #64748B;
+            line-height: 1.5;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #475569;
+            display: inline;
+        }
+
+        .detail-line {
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .conflict-badge {
+            display: inline-block;
+            color: white;
+            padding: 1px 3px;
+            border-radius: 2px;
+            font-size: 7px;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+
+        .conflict-badge.personal {
+            background: #dc2626;
+        }
+
+        .conflict-badge.classification {
+            background: #f59e0b;
+            color: #78350f;
+        }
+
+        .hover-popup {
+            position: fixed;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            z-index: 10000;
+            max-width: 300px;
+            pointer-events: none;
+            white-space: pre-wrap;
+            display: none;
+        }
+
+        .hover-popup.show {
+            display: block;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+        }
+
+        .spinner {
+            border: 4px solid #e2e8f0;
+            border-top: 4px solid #2563eb;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 32px;
+            border-radius: 20px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0F172A;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 3px solid #DBEAFE;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .conflict-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .conflict-item {
+            padding: 16px 20px;
+            background: white;
+            border: 2px solid #FEE2E2;
+            border-left: 5px solid #DC2626;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(220, 38, 38, 0.08);
+            transition: all 0.2s;
+        }
+
+        .conflict-item:hover {
+            border-left-width: 8px;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.15);
+            transform: translateX(4px);
+        }
+
+        .conflict-item.classification {
+            border-color: #FEF3C7;
+            border-left-color: #F59E0B;
+            box-shadow: 0 2px 4px rgba(245, 158, 11, 0.08);
+        }
+
+        .conflict-item.classification:hover {
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
+        }
+
+        .conflict-type {
+            font-weight: 700;
+            color: #DC2626;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: #FEE2E2;
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .conflict-item.classification .conflict-type {
+            color: #D97706;
+            background: #FEF3C7;
+        }
+
+        .conflict-details {
+            color: #475569;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .conflict-details strong {
+            color: #0F172A;
+            font-weight: 600;
+        }
+
+
+        .metadata-content {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .metadata-section {
+            margin-bottom: 28px;
+            padding: 20px;
+            background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%);
+            border-radius: 16px;
+            border: 2px solid #DBEAFE;
+        }
+
+        .metadata-section h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2563EB;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid #BFDBFE;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .metadata-section h3::before {
+            content: "";
+            display: none;
+        }
+
+        .metadata-item {
+            background: white;
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #64748B;
+            border: 1px solid #E2E8F0;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .metadata-item:hover {
+            border-color: #BFDBFE;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+            transform: translateX(4px);
+        }
+
+        .metadata-item strong {
+            color: #0F172A;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .metadata-item span:last-child {
+            color: #2563EB;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        /* Constraints Configuration Styles */
+        .constraints-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .constraint-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .constraint-item:hover {
+            background: #F1F5F9;
+            border-color: #CBD5E1;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .constraint-info {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        .constraint-info label {
+            display: block;
+            font-weight: 600;
+            font-size: 16px;
+            color: #0F172A;
+            margin-bottom: 4px;
+        }
+
+        .constraint-description {
+            display: block;
+            font-size: 14px;
+            color: #64748B;
+            line-height: 1.4;
+        }
+
+        .constraint-controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .constraint-controls label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border: 2px solid #E2E8F0;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .constraint-controls label:hover {
+            border-color: #CBD5E1;
+            background: #F8FAFC;
+        }
+
+        .constraint-controls input[type="radio"] {
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .constraint-controls input[type="radio"]:checked + span {
+            color: #2563EB;
+            font-weight: 600;
+        }
+
+        .constraint-controls input[type="radio"]:checked ~ label {
+            border-color: #2563EB;
+            background: #EFF6FF;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid #E2E8F0;
+        }
+
+        .modal-actions .btn {
+            min-width: 140px;
+        }
+
+        /* Priority Config Styles */
+        .priority-config-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .priority-config-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .priority-config-item:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .priority-config-info {
+            flex: 1;
+        }
+
+        .priority-config-name {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 4px;
+            font-size: 15px;
+        }
+
+        .priority-config-desc {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .priority-select {
+            padding: 8px 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            background: white;
+            font-size: 14px;
+            font-weight: 500;
+            color: #1e293b;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-width: 140px;
+        }
+
+        .priority-select:hover {
+            border-color: #3b82f6;
+        }
+
+        .priority-select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Icon helper classes */
+        .icon {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .icon-lg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .icon-xl {
+            width: 32px;
+            height: 32px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hover Popup -->
+    <div id="hoverPopup" class="hover-popup"></div>
+
+    <div class="header">
+        <h1>Interactive Schedule Viewer</h1>
+        <div class="header-actions">
+            <button class="btn" onclick="showMetadata()"><svg class="icon" style="margin-right: 6px;"><use href="#icon-chart"></use></svg> Metadata</button>
+            <button class="btn" onclick="showConstraintsModal()"><svg class="icon" style="margin-right: 6px;"><use href="#icon-settings"></use></svg> Constraints Config</button>
+            <button class="btn btn-primary" onclick="showConflicts()"><svg class="icon" style="margin-right: 6px;"><use href="#icon-alert"></use></svg> View Conflicts</button>
+            <button class="btn btn-success" onclick="downloadSchedule()"><svg class="icon" style="margin-right: 6px;"><use href="#icon-download"></use></svg> Download Excel</button>
+            <button class="btn" onclick="window.location.href='/'"><svg class="icon" style="margin-right: 6px;"><use href="#icon-home"></use></svg> Home</button>
+        </div>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stats-group">
+            <div class="stat clickable" onclick="clearConflictFilter()" id="totalSessionsStat" title="Click to reset filter">
+                <div class="stat-icon primary"><svg class="icon-lg"><use href="#icon-clock"></use></svg></div>
+                <div class="stat-content">
+                    <span class="stat-label">Total Sessions</span>
+                    <span class="stat-value" id="totalSessions">0</span>
+                </div>
+            </div>
+            <div class="stat clickable" onclick="filterConflictType('personal')" id="personalConflictsStat" title="Click to highlight personal conflicts">
+                <div class="stat-icon error"><svg class="icon-lg"><use href="#icon-alert"></use></svg></div>
+                <div class="stat-content">
+                    <span class="stat-label">Personal Conflicts</span>
+                    <span class="stat-value" id="personalConflicts">0</span>
+                </div>
+            </div>
+            <div class="stat clickable" onclick="filterConflictType('classification')" id="classConflictsStat" title="Click to highlight classification conflicts">
+                <div class="stat-icon warning"><svg class="icon-lg"><use href="#icon-list"></use></svg></div>
+                <div class="stat-content">
+                    <span class="stat-label">Classification Conflicts</span>
+                    <span class="stat-value" id="classConflicts">0</span>
+                </div>
+            </div>
+            <div class="stat clickable" onclick="filterConflictType('seriesRoom')" id="seriesRoomConflictsStat" title="Click to highlight series room conflicts">
+                <div class="stat-icon warning"><svg class="icon-lg"><use href="#icon-building"></use></svg></div>
+                <div class="stat-content">
+                    <span class="stat-label">Series Room Conflicts</span>
+                    <span class="stat-value" id="seriesRoomConflicts">0</span>
+                </div>
+            </div>
+            <div class="stat clickable" onclick="filterConflictType('seriesBackToBack')" id="seriesBackConflictsStat" title="Click to highlight series back-to-back conflicts">
+                <div class="stat-icon warning"><svg class="icon-lg"><use href="#icon-clock"></use></svg></div>
+                <div class="stat-content">
+                    <span class="stat-label">Series Back-to-Back Conflicts</span>
+                    <span class="stat-value" id="seriesBackConflicts">0</span>
+                </div>
+            </div>
+            <div class="stat clickable" onclick="filterConflictType('personalClassification')" id="personalClassificationConflictsStat" title="Click to highlight personal-classification conflicts">
+                <div class="stat-icon warning"><svg class="icon-lg"><use href="#icon-tag"></use></svg></div>
+                <div class="stat-content">
+                    <span class="stat-label">Personal-Classification Conflicts</span>
+                    <span class="stat-value" id="personalClassificationConflicts">0</span>
+                </div>
+            </div>
+        </div>
+        <button class="btn-reset" onclick="resetSchedule()"><svg class="icon" style="margin-right: 6px;"><use href="#icon-refresh"></use></svg> Regenerate Schedule</button>
+    </div>
+
+    <div class="schedule-container">
+        <div class="schedule-scroll-wrapper">
+            <div id="scheduleGrid" class="loading">
+                <div class="spinner"></div>
+                <p>Loading schedule...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="conflictModal">
+        <div class="modal-content">
+            <div class="modal-header"><svg class="icon" style="margin-right: 8px;"><use href="#icon-alert"></use></svg> Detected Conflicts</div>
+            <ul class="conflict-list" id="conflictList"></ul>
+            <button class="btn btn-primary" onclick="closeConflictModal()" style="margin-top: 24px; width: 100%;"><svg class="icon" style="margin-right: 6px;"><use href="#icon-check"></use></svg> Close</button>
+        </div>
+    </div>
+
+    <div class="modal" id="metadataModal">
+        <div class="modal-content">
+            <div class="modal-header"><svg class="icon" style="margin-right: 8px;"><use href="#icon-chart"></use></svg> Schedule Metadata</div>
+            <div class="metadata-content" id="metadataContent">
+                <div class="metadata-section">
+                    <h3>Generation Statistics</h3>
+                    <div id="metadataStats"></div>
+                </div>
+                <div class="metadata-section">
+                    <h3>Room Information</h3>
+                    <div id="metadataRooms"></div>
+                </div>
+                <div class="metadata-section">
+                    <h3>Session Distribution</h3>
+                    <div id="metadataDistribution"></div>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="closeMetadataModal()" style="margin-top: 24px; width: 100%;"><svg class="icon" style="margin-right: 6px;"><use href="#icon-check"></use></svg> Close</button>
+        </div>
+    </div>
+
+    <!-- Constraints Configuration Modal -->
+    <div class="modal" id="constraintsModal">
+        <div class="modal-content" style="max-width: 700px;">
+            <div class="modal-header"><svg class="icon" style="margin-right: 8px;"><use href="#icon-settings"></use></svg> Constraints Configuration</div>
+
+            <!-- Strict Mode Toggle -->
+            <div style="margin: 20px 0; padding: 16px; background: #f3f4f6; border-radius: 8px;">
+                <label style="display: flex; align-items: center; cursor: pointer; font-weight: 500;">
+                    <input type="checkbox" id="strictModeToggle" checked style="width: 20px; height: 20px; margin-right: 12px; cursor: pointer;">
+                    <div>
+                        <div><svg class="icon" style="margin-right: 6px; vertical-align: text-bottom;"><use href="#icon-lock"></use></svg> Strict Hierarchy Mode</div>
+                        <small style="color: #6b7280; font-weight: normal;">Never allow higher-priority conflicts to increase during optimization</small>
+                    </div>
+                </label>
+            </div>
+
+            <!-- Priority Order Section -->
+            <div style="margin: 20px 0;">
+                <h3 style="margin: 0 0 12px 0; font-size: 16px; font-weight: 600;"><svg class="icon" style="margin-right: 6px; vertical-align: text-bottom;"><use href="#icon-chart"></use></svg> Optimization Priority Order</h3>
+                <p style="margin: 0 0 16px 0; color: #6b7280; font-size: 14px;">Set priority ranking (1 = highest priority, 5 = lowest priority)</p>
+
+                <div class="priority-config-list">
+                    <div class="priority-config-item">
+                        <div class="priority-config-info">
+                            <div class="priority-config-name">Personal Conflicts</div>
+                            <div class="priority-config-desc">Same person in multiple sessions</div>
+                        </div>
+                        <select id="priority_personal" class="priority-select">
+                            <option value="1" selected>1 - Highest</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5 - Lowest</option>
+                        </select>
+                    </div>
+
+                    <div class="priority-config-item">
+                        <div class="priority-config-info">
+                            <div class="priority-config-name">Classification Conflicts</div>
+                            <div class="priority-config-desc">Overlapping classification codes</div>
+                        </div>
+                        <select id="priority_classification" class="priority-select">
+                            <option value="1">1 - Highest</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5" selected>5 - Lowest</option>
+                        </select>
+                    </div>
+
+                    <div class="priority-config-item">
+                        <div class="priority-config-info">
+                            <div class="priority-config-name">Personal-Classification Conflicts</div>
+                            <div class="priority-config-desc">Topic similarity conflicts</div>
+                        </div>
+                        <select id="priority_personal_classification" class="priority-select">
+                            <option value="1">1 - Highest</option>
+                            <option value="2" selected>2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5 - Lowest</option>
+                        </select>
+                    </div>
+
+                    <div class="priority-config-item">
+                        <div class="priority-config-info">
+                            <div class="priority-config-name">Series Back-to-Back</div>
+                            <div class="priority-config-desc">Multi-part series consecutive placement</div>
+                        </div>
+                        <select id="priority_series_back" class="priority-select">
+                            <option value="1">1 - Highest</option>
+                            <option value="2">2</option>
+                            <option value="3" selected>3</option>
+                            <option value="4">4</option>
+                            <option value="5">5 - Lowest</option>
+                        </select>
+                    </div>
+
+                    <div class="priority-config-item">
+                        <div class="priority-config-info">
+                            <div class="priority-config-name">Series Room Consistency</div>
+                            <div class="priority-config-desc">Multi-part series same room</div>
+                        </div>
+                        <select id="priority_series_room" class="priority-select">
+                            <option value="1">1 - Highest</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4" selected>4</option>
+                            <option value="5">5 - Lowest</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn" onclick="loadDefaultConstraints()"><svg class="icon" style="margin-right: 6px;"><use href="#icon-refresh"></use></svg> Load Default</button>
+                <button class="btn btn-primary" onclick="saveConstraints()"><svg class="icon" style="margin-right: 6px;"><use href="#icon-save"></use></svg> Save & Close</button>
+                <button class="btn" onclick="closeConstraintsModal()"><svg class="icon" style="margin-right: 6px;"><use href="#icon-x"></use></svg> Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        const filename = '{{FILENAME}}';
+        let scheduleData = [];
+        let initialScheduleData = []; // Store initial state for reset
+        let conflicts = { classification: [], personal: [], personalClassification: [] };
+        let sessionConflicts = {}; // Map session ID to conflict info
+        let isModified = false;
+        let modifiedFilename = null;  // Track the modified schedule filename for downloads
+        let activeConflictFilter = null; // Track active conflict filter
+
+        // Interactive conflict filtering functions
+        function filterConflictType(type) {
+            console.log('🎨 Filtering conflicts by type:', type);
+            activeConflictFilter = type;
+
+            // Remove active class from all stats
+            document.querySelectorAll('.stat').forEach(stat => stat.classList.remove('active'));
+
+            // Add active class to clicked stat
+            const statId = type === 'personal' ? 'personalConflictsStat' :
+                          type === 'classification' ? 'classConflictsStat' :
+                          type === 'personalClassification' ? 'personalClassificationConflictsStat' :
+                          type === 'seriesRoom' ? 'seriesRoomConflictsStat' :
+                          type === 'seriesBackToBack' ? 'seriesBackConflictsStat' : null;
+
+            if (statId) {
+                document.getElementById(statId).classList.add('active');
+            }
+
+            // Get all session cards
+            const cards = document.querySelectorAll('.session-card');
+
+            cards.forEach(card => {
+                const sessionId = card.dataset.id;
+                const conflictInfo = sessionConflicts[sessionId];
+
+                // Remove all highlight classes
+                card.classList.remove('no-conflict', 'highlight-personal', 'highlight-classification',
+                    'highlight-personal-classification', 'highlight-series-room', 'highlight-series-back-to-back');
+
+                // Check if session has NO conflicts at all
+                const hasNoConflicts = !conflictInfo || (
+                    (!conflictInfo.personal || conflictInfo.personal.length === 0) &&
+                    (!conflictInfo.classification || conflictInfo.classification.length === 0) &&
+                    (!conflictInfo.personalClassification || conflictInfo.personalClassification.length === 0) &&
+                    (!conflictInfo.seriesBackToBack || conflictInfo.seriesBackToBack.length === 0) &&
+                    !conflictInfo.roomError
+                );
+
+                if (hasNoConflicts) {
+                    // Always show green for conflict-free sessions
+                    card.classList.add('no-conflict');
+                } else {
+                    // Check if session has the selected conflict type
+                    let hasSelectedConflict = false;
+
+                    if (type === 'personal' && conflictInfo && conflictInfo.personal && conflictInfo.personal.length > 0) {
+                        hasSelectedConflict = true;
+                        card.classList.add('highlight-personal');
+                    } else if (type === 'classification' && conflictInfo && (
+                        (conflictInfo.classification && conflictInfo.classification.length > 0) ||
+                        conflictInfo.roomError
+                    )) {
+                        hasSelectedConflict = true;
+                        card.classList.add('highlight-classification');
+                    } else if (type === 'personalClassification' && conflictInfo &&
+                        conflictInfo.personalClassification && conflictInfo.personalClassification.length > 0) {
+                        hasSelectedConflict = true;
+                        card.classList.add('highlight-personal-classification');
+                    } else if (type === 'seriesRoom' && conflictInfo && conflictInfo.roomError) {
+                        hasSelectedConflict = true;
+                        card.classList.add('highlight-series-room');
+                    } else if (type === 'seriesBackToBack' && conflictInfo &&
+                        conflictInfo.seriesBackToBack && conflictInfo.seriesBackToBack.length > 0) {
+                        hasSelectedConflict = true;
+                        card.classList.add('highlight-series-back-to-back');
+                    }
+                    // If session has conflicts but not the selected type, leave it neutral (no color)
+                }
+            });
+
+            console.log('✅ Conflict highlighting applied');
+        }
+
+        function clearConflictFilter() {
+            console.log('🔄 Clearing conflict filter');
+            console.log('📊 sessionConflicts object keys:', Object.keys(sessionConflicts).length);
+            activeConflictFilter = null;
+
+            // Remove active class from all stats
+            document.querySelectorAll('.stat').forEach(stat => stat.classList.remove('active'));
+
+            // Get all session cards
+            const cards = document.querySelectorAll('.session-card');
+            console.log('🎴 Total session cards found:', cards.length);
+
+            let greenCount = 0;
+            let neutralCount = 0;
+            let sampleLogged = false;
+
+            cards.forEach(card => {
+                const sessionId = card.dataset.id;
+                const conflictInfo = sessionConflicts[sessionId];
+
+                // Log first 3 samples
+                if (!sampleLogged && greenCount + neutralCount < 3) {
+                    console.log(`🔍 Sample Session ${sessionId}:`, {
+                        conflictInfo,
+                        hasConflictInfo: !!conflictInfo
+                    });
+                }
+                if (greenCount + neutralCount >= 3) sampleLogged = true;
+
+                // Remove all highlight classes
+                card.classList.remove('no-conflict', 'highlight-personal', 'highlight-classification',
+                    'highlight-personal-classification', 'highlight-series-room', 'highlight-series-back-to-back');
+
+                // Check if session has NO conflicts at all
+                const hasNoConflicts = !conflictInfo || (
+                    (!conflictInfo.personal || conflictInfo.personal.length === 0) &&
+                    (!conflictInfo.classification || conflictInfo.classification.length === 0) &&
+                    (!conflictInfo.personalClassification || conflictInfo.personalClassification.length === 0) &&
+                    (!conflictInfo.seriesBackToBack || conflictInfo.seriesBackToBack.length === 0) &&
+                    !conflictInfo.roomError
+                );
+
+                if (hasNoConflicts) {
+                    // Show green for conflict-free sessions
+                    card.classList.add('no-conflict');
+                    greenCount++;
+                } else {
+                    neutralCount++;
+                }
+                // Sessions with conflicts remain neutral (no color)
+            });
+
+            console.log(`✅ Filter cleared - Green: ${greenCount}, Neutral: ${neutralCount}`);
+        }
+
+        // Load conflicts from server using fast Rust backend
+        async function loadConflictsFromServer() {
+            try {
+                console.log('📊 Loading conflicts from server...');
+                const response = await fetch('/api/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ sessions: scheduleData })
+                });
+
+                const data = await response.json();
+                console.log('✅ Server conflict analysis:', data);
+
+                // Update conflict counts from server
+                document.getElementById('classConflicts').textContent = data.classificationConflicts || 0;
+                document.getElementById('personalConflicts').textContent = data.personalConflicts || 0;
+                document.getElementById('personalClassificationConflicts').textContent = data.personalClassificationConflicts || 0;
+                document.getElementById('seriesRoomConflicts').textContent = data.seriesRoomConflicts || 0;
+                document.getElementById('seriesBackConflicts').textContent = data.seriesBackToBackConflicts || 0;
+
+                // Note: We don't build conflict badges here - renderSchedule will call
+                // detectConflictsLocal() for that if needed (for drag-and-drop functionality)
+            } catch (error) {
+                console.error('❌ Failed to load conflicts from server:', error);
+                // Fallback to client-side detection if server fails
+                console.log('⚠️  Falling back to client-side conflict detection...');
+                detectConflictsLocal();
+            }
+        }
+
+        // Load schedule data
+        async function loadSchedule() {
+            try {
+                const response = await fetch(`/api/schedule/${filename}`);
+                const data = await response.json();
+
+                console.log('API response:', data);
+
+                // Check if data has sessions field
+                if (!data.sessions) {
+                    throw new Error(`API response missing 'sessions' field. Response: ${JSON.stringify(data)}`);
+                }
+
+                // Filter out empty rows and summary rows
+                scheduleData = data.sessions.filter(s => {
+                    // Filter out invalid rooms first
+                    if (!s.Room || s.Room.trim() === '') return false;
+
+                    // Filter out entries with parentheses, numbers > 12, or containing "rooms"
+                    const roomStr = s.Room.trim();
+                    if (roomStr.includes('(') || roomStr.includes('rooms') || roomStr === '13') return false;
+
+                    // Only include numeric rooms 1-12 (strict check)
+                    const roomNum = parseInt(roomStr);
+                    if (!isNaN(roomNum) && (roomNum < 1 || roomNum > 12)) return false;
+                    if (isNaN(roomNum)) return false; // Non-numeric room numbers
+
+                    return s.ID &&
+                           s.ID.trim() !== '' &&
+                           s.Session &&
+                           s.Session !== 'SUMMARY STATISTICS' &&
+                           s.Session !== 'Total sessions to schedule:' &&
+                           !s.Session.includes('Successfully scheduled') &&
+                           !s.Session.includes('Regular minisymposia') &&
+                           !s.Session.includes('CL-Minisymposia');
+                });
+
+                // Store deep copy of initial state
+                initialScheduleData = JSON.parse(JSON.stringify(scheduleData));
+
+                console.log(`Loaded ${scheduleData.length} sessions`);
+
+                // Load conflicts from server (fast Rust backend instead of slow JavaScript)
+                await loadConflictsFromServer();
+
+                renderSchedule();
+
+                // Detect conflicts locally - this also calls updateStats() and clearConflictFilter()
+                detectConflictsLocal();
+            } catch (error) {
+                document.getElementById('scheduleGrid').innerHTML =
+                    `<p style="color: #dc2626;">Error loading schedule: ${error.message}</p>`;
+            }
+        }
+
+        // Reset schedule to initial state
+        function resetSchedule() {
+            console.log('🔄 resetSchedule() function called!');
+            // Get saved constraints from localStorage (check both old and new keys for backwards compatibility)
+            let savedConstraints = localStorage.getItem('constraintsConfig');
+
+            // If not found with new key, try old key
+            if (!savedConstraints) {
+                savedConstraints = localStorage.getItem('constraintConfig');
+            }
+
+            if (!savedConstraints) {
+                console.log('❌ No constraints found in localStorage');
+                alert('No constraint configuration found. Please configure constraints first.');
+                return;
+            }
+            console.log('✅ Found constraints:', savedConstraints);
+            console.log('🔍 About to show confirmation dialog...');
+
+            if (!confirm('Are you sure you want to regenerate the schedule with the current constraint configuration? This will create a new schedule.')) {
+                console.log('❌ User cancelled regeneration');
+                return;
+            }
+
+            // Show loading state
+            const button = document.querySelector('.btn-reset');
+            const originalText = button.innerHTML;
+            button.innerHTML = '⏳ Regenerating...';
+            button.disabled = true;
+
+            // Parse constraints
+            let constraints;
+            try {
+                constraints = JSON.parse(savedConstraints);
+            } catch (e) {
+                console.error('Failed to parse saved constraints:', e);
+                alert('Invalid constraint configuration found. Please reconfigure constraints.');
+                button.innerHTML = originalText;
+                button.disabled = false;
+                return;
+            }
+
+            // Call regenerate endpoint
+            fetch('/regenerate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    constraints: constraints
+                })
+            })
+            .then(response => {
+                console.log('Response received:', response);
+                return response.json();
+            })
+            .then(data => {
+                console.log('Response data:', data);
+                button.innerHTML = originalText;
+                button.disabled = false;
+
+                if (data.success) {
+                    alert('Schedule regenerated successfully!');
+                    // Redirect to the new schedule view
+                    console.log('Redirecting to:', data.view_url);
+                    window.location.href = data.view_url;
+                } else {
+                    alert('Regeneration failed: ' + data.error);
+                    console.error('Regeneration failed:', data.error);
+                }
+            })
+            .catch(error => {
+                button.innerHTML = originalText;
+                button.disabled = false;
+                console.error('Error regenerating schedule:', error);
+                alert('Failed to regenerate schedule. Please try again.');
+            });
+        }
+
+        function renderSchedule() {
+            const grid = document.getElementById('scheduleGrid');
+            grid.className = 'schedule-grid';
+            grid.innerHTML = '';
+
+            // Group by session and room
+            const grouped = {};
+            scheduleData.forEach(session => {
+                const sessionNum = session.Session || 'Unknown';
+                const room = session.Room || 'Unknown';
+
+                if (!grouped[sessionNum]) grouped[sessionNum] = {};
+                if (!grouped[sessionNum][room]) grouped[sessionNum][room] = [];
+                grouped[sessionNum][room].push(session);
+            });
+
+            // Define session order
+            const sessionOrder = [
+                'TUE First Period',
+                'TUE Second Period',
+                'WED First Period',
+                'WED Second Period',
+                'THU First Period',
+                'THU Second Period',
+                'FRI First Period',
+                'FRI Second Period'
+            ];
+
+            const sessions = sessionOrder.filter(s => grouped[s]);
+
+            // Get all rooms and sort numerically
+            const allRooms = new Set();
+            sessions.forEach(s => Object.keys(grouped[s]).forEach(r => allRooms.add(r)));
+            const rooms = Array.from(allRooms).sort((a, b) => {
+                const numA = parseInt(a);
+                const numB = parseInt(b);
+                if (!isNaN(numA) && !isNaN(numB)) {
+                    return numA - numB;
+                }
+                return a.localeCompare(b);
+            });
+
+            // Header row
+            grid.appendChild(createHeader('Session'));
+            rooms.forEach(room => grid.appendChild(createHeader(`Room ${room}`, true)));
+
+            // Create grid
+            sessions.forEach(session => {
+                // Session label (abbreviated)
+                const sessionLabel = session.replace('First Period', 'AM').replace('Second Period', 'PM');
+                grid.appendChild(createHeader(sessionLabel));
+                rooms.forEach(room => {
+                    const slot = createSlot(session, room);
+                    const sessionData = grouped[session][room] || [];
+                    sessionData.forEach(s => {
+                        slot.appendChild(createSessionCard(s));
+                    });
+                    grid.appendChild(slot);
+                });
+            });
+
+            // Conflict detection is now handled by loadConflictsFromServer() on initial load
+            // detectConflictsLocal() is still called when user drags sessions (see drop handler)
+            // If you need to re-enable client-side detection on render, uncomment below:
+            // detectConflictsLocal();
+        }
+
+        function createHeader(text, isRoom = false) {
+            const div = document.createElement('div');
+            div.className = isRoom ? 'room-header' : 'session-header';
+            div.textContent = text;
+            return div;
+        }
+
+        function createSlot(session, room) {
+            const slot = document.createElement('div');
+            slot.className = 'slot';
+            slot.dataset.session = session;
+            slot.dataset.room = room;
+
+            slot.addEventListener('dragover', handleDragOver);
+            slot.addEventListener('dragleave', handleDragLeave);
+            slot.addEventListener('drop', handleDrop);
+
+            return slot;
+        }
+
+        function createSessionCard(session) {
+            const card = document.createElement('div');
+            card.className = 'session-card';
+            card.draggable = true;
+            card.dataset.id = session.ID || '';
+
+            const id = document.createElement('div');
+            id.className = 'session-id';
+            id.textContent = session.ID || 'Unknown';
+
+            const title = document.createElement('div');
+            title.className = 'session-title';
+            const fullTitle = session.Title || 'Untitled';
+
+            // For CL sessions, check if title has format "Display Title|Full Titles"
+            let displayTitle = fullTitle;
+            if (session.ID && session.ID.startsWith('CL') && fullTitle.includes('|')) {
+                const parts = fullTitle.split('|');
+                displayTitle = parts[0]; // Use only the first part for display
+            }
+
+            // Debug: Log the full title length
+            if (displayTitle.length > 50) {
+                console.log(`Long title (${displayTitle.length} chars):`, displayTitle);
+            }
+
+            title.textContent = displayTitle;
+            title.title = fullTitle; // Add tooltip with full title
+            title.style.whiteSpace = 'normal';
+            title.style.overflow = 'visible';
+            title.style.textOverflow = 'clip';
+            title.style.display = 'block';
+            title.style.webkitLineClamp = 'unset';
+            title.style.webkitBoxOrient = 'unset';
+            title.style.wordBreak = 'break-word';
+
+            const details = document.createElement('div');
+            details.className = 'session-details';
+
+            // Parse organizers and speakers
+            const speakersOrg = session['Speakers/Organizers'] || '';
+            const parts = speakersOrg.split('|');
+
+            let orgText = '';
+            let speakText = '';
+
+            parts.forEach(part => {
+                const lower = part.toLowerCase().trim();
+                if (lower.startsWith('org:')) {
+                    orgText = part.substring(4).trim();
+                } else if (lower.startsWith('speakers:')) {
+                    speakText = part.substring(9).trim();
+                }
+            });
+
+            if (orgText) {
+                const orgLine = document.createElement('div');
+                orgLine.className = 'detail-line';
+
+                const orgLabel = document.createElement('span');
+                orgLabel.style.fontWeight = '600';
+                orgLabel.textContent = 'Org: ';
+
+                const orgValue = document.createElement('span');
+                orgValue.textContent = orgText;
+
+                orgLine.appendChild(orgLabel);
+                orgLine.appendChild(orgValue);
+                details.appendChild(orgLine);
+            }
+
+            if (speakText) {
+                const speakLine = document.createElement('div');
+                speakLine.className = 'detail-line';
+
+                const speakLabel = document.createElement('span');
+                speakLabel.style.fontWeight = '600';
+                speakLabel.textContent = 'Spk: ';
+
+                const speakValue = document.createElement('span');
+                speakValue.textContent = speakText;
+
+                speakLine.appendChild(speakLabel);
+                speakLine.appendChild(speakValue);
+                details.appendChild(speakLine);
+            }
+
+            card.appendChild(id);
+            card.appendChild(title);
+            card.appendChild(details);
+
+            card.addEventListener('dragstart', handleDragStart);
+            card.addEventListener('dragend', handleDragEnd);
+            card.addEventListener('mouseenter', showTooltip);
+            card.addEventListener('mouseleave', hideTooltip);
+
+            return card;
+        }
+
+        function showTooltip(e) {
+            const card = e.currentTarget;
+            const sessionId = card.dataset.id;
+            const session = scheduleData.find(s => s.ID === sessionId);
+            const conflictInfo = sessionConflicts[sessionId];
+
+            const popup = document.getElementById('hoverPopup');
+            let text = '';
+
+            // Check if this is a CL session
+            const isCL = sessionId.startsWith('CL');
+
+            if (isCL) {
+                // Show CL talk details - the Title field format: "Display Title|Talk1; Talk2; Talk3"
+                const title = session.Title || '';
+
+                text = `CL Minisymposium: ${sessionId}\n\n`;
+                text += `Talks in this CL:\n`;
+
+                if (title && title.includes('|')) {
+                    // Split by | to get display title and full lecture titles
+                    const parts = title.split('|');
+                    if (parts.length > 1) {
+                        const lectureTitles = parts[1]; // Get the part after |
+                        // Split by semicolon to get individual talks
+                        const talks = lectureTitles.split(';').map(t => t.trim()).filter(t => t);
+
+                        if (talks.length > 0) {
+                            talks.forEach(talk => {
+                                text += `  • ${talk}\n`;
+                            });
+                        } else {
+                            text += `  No talk details available\n`;
+                        }
+                    } else {
+                        text += `  No talk details available\n`;
+                    }
+                } else {
+                    text += `  No talk details available\n`;
+                }
+
+                text += '\n';
+            }
+
+            // Show conflicts and room errors
+            const hasConflicts = conflictInfo && (conflictInfo.personal.length > 0 || conflictInfo.classification.length > 0 || conflictInfo.roomError);
+
+            if (hasConflicts) {
+                if (!isCL) text = 'Conflicts:\n\n';
+
+                if (conflictInfo.personal.length > 0) {
+                    text += '🔴 PERSONAL CONFLICTS:\n';
+                    conflictInfo.personal.forEach(c => {
+                        text += `  - With ${c.otherId}: ${c.reason}\n`;
+                    });
+                    text += '\n';
+                }
+
+                if (conflictInfo.roomError) {
+                    text += '🟡 ROOM WARNING:\n';
+                    text += `  ${conflictInfo.roomError}\n\n`;
+                }
+
+                if (conflictInfo.classification.length > 0) {
+                    text += '🟡 CLASSIFICATION CONFLICTS:\n';
+                    conflictInfo.classification.forEach(c => {
+                        text += `  - With ${c.otherId}\n`;
+                    });
+                }
+            }
+
+            // Only show popup if there's something to display
+            if (!text || (!isCL && !hasConflicts)) {
+                return;
+            }
+
+            popup.textContent = text;
+            popup.classList.add('show');
+
+            const rect = card.getBoundingClientRect();
+            popup.style.left = rect.left + 'px';
+            popup.style.top = (rect.bottom + 5) + 'px';
+        }
+
+        function hideTooltip() {
+            const popup = document.getElementById('hoverPopup');
+            popup.classList.remove('show');
+        }
+
+        let draggedCard = null;
+        let sourceSlot = null;
+
+        function handleDragStart(e) {
+            draggedCard = e.target;
+            sourceSlot = e.target.parentElement;
+            e.target.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            e.currentTarget.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            e.currentTarget.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('drag-over');
+
+            const targetSlot = e.currentTarget;
+            if (draggedCard && targetSlot !== sourceSlot) {
+                // Check if target slot already has a session card
+                const existingCard = targetSlot.querySelector('.session-card');
+
+                if (existingCard) {
+                    // SWAP: Move existing card to source slot
+                    sourceSlot.appendChild(existingCard);
+
+                    // Update existing card's data
+                    const existingId = existingCard.dataset.id;
+                    const existingIndex = scheduleData.findIndex(s => s.ID === existingId);
+                    if (existingIndex !== -1) {
+                        scheduleData[existingIndex].Session = sourceSlot.dataset.session;
+                        scheduleData[existingIndex].Room = sourceSlot.dataset.room;
+                    }
+                }
+
+                // Move dragged card to target slot
+                targetSlot.appendChild(draggedCard);
+
+                // Update dragged card's data
+                const sessionId = draggedCard.dataset.id;
+                const newSession = targetSlot.dataset.session;
+                const newRoom = targetSlot.dataset.room;
+
+                const sessionIndex = scheduleData.findIndex(s => s.ID === sessionId);
+                if (sessionIndex !== -1) {
+                    scheduleData[sessionIndex].Session = newSession;
+                    scheduleData[sessionIndex].Room = newRoom;
+                }
+
+                isModified = true;
+                modifiedFilename = null;  // Reset so next save creates a new file
+                detectConflictsLocal();
+            }
+        }
+
+        function detectConflictsLocal() {
+            conflicts = { classification: [], personal: [], personalClassification: [], seriesBackToBack: [] };
+            sessionConflicts = {};
+
+            // OPTIMIZATION: Pre-parse all session fields once (instead of per-pair)
+            // This reduces ~528 parsing operations per field to just 96
+            const fieldCache = new Map();
+            scheduleData.forEach(s => {
+                // Parse Notes topics once
+                const notes = s.Notes || s.notes || s.NOTES || '';
+                const normalizeTopic = (topic) => topic.replace(/\s+/g, '').toLowerCase();
+                const topics = notes.trim() ?
+                    notes.split(/[;,|/]/).map(t => normalizeTopic(t.trim())).filter(t => t) : [];
+
+                fieldCache.set(s.ID, {
+                    classifications: (s.Classification || '').split(';').map(c => c.trim()).filter(c => c),
+                    speakers: (s['Speakers/Organizers'] || s.Speakers || '').split(/[;,|]/).map(p => p.trim().toLowerCase()).filter(p => p),
+                    organizers: (s.Organizers || '').split(/[;,|]/).map(p => p.trim().toLowerCase()).filter(p => p),
+                    topics: topics,
+                    hasTopics: topics.length > 0
+                });
+            });
+
+            // Group by session
+            const bySession = {};
+            scheduleData.forEach(s => {
+                const session = s.Session;
+                if (!bySession[session]) bySession[session] = [];
+                bySession[session].push(s);
+                if (!sessionConflicts[s.ID]) {
+                    sessionConflicts[s.ID] = {
+                        personal: [],
+                        classification: [],
+                        personalClassification: [],
+                        seriesRoom: [],
+                        seriesBackToBack: []
+                    };
+                }
+            });
+
+            // Check classification conflicts
+            Object.keys(bySession).forEach(session => {
+                const sessions = bySession[session];
+                for (let i = 0; i < sessions.length; i++) {
+                    for (let j = i + 1; j < sessions.length; j++) {
+                        const s1 = sessions[i];
+                        const s2 = sessions[j];
+                        const cache1 = fieldCache.get(s1.ID);
+                        const cache2 = fieldCache.get(s2.ID);
+
+                        if (hasClassificationOverlap(cache1, cache2)) {
+                            const conflict = {
+                                session: session,
+                                id1: s1.ID,
+                                id2: s2.ID,
+                                title1: s1.Title,
+                                title2: s2.Title
+                            };
+                            conflicts.classification.push(conflict);
+                            sessionConflicts[s1.ID].classification.push({ otherId: s2.ID, reason: 'Shared classification' });
+                            sessionConflicts[s2.ID].classification.push({ otherId: s1.ID, reason: 'Shared classification' });
+                        }
+
+                        if (hasPersonOverlap(cache1, cache2)) {
+                            const conflict = {
+                                session: session,
+                                id1: s1.ID,
+                                id2: s2.ID,
+                                person: 'Organizer/Speaker overlap',
+                                title1: s1.Title,
+                                title2: s2.Title
+                            };
+                            conflicts.personal.push(conflict);
+                            sessionConflicts[s1.ID].personal.push({ otherId: s2.ID, reason: 'Organizer/Speaker overlap' });
+                            sessionConflicts[s2.ID].personal.push({ otherId: s1.ID, reason: 'Organizer/Speaker overlap' });
+                        }
+
+                        // Check personal-classification conflicts (between regular MS and CL-minisymposium with similar topics)
+                        if (hasPersonalClassificationConflict(s1, s2, cache1, cache2)) {
+                            const conflict = {
+                                session: session,
+                                id1: s1.ID,
+                                id2: s2.ID,
+                                reason: 'Similar topics between regular MS and CL-minisymposium',
+                                title1: s1.Title,
+                                title2: s2.Title
+                            };
+                            conflicts.personalClassification.push(conflict);
+                            sessionConflicts[s1.ID].personalClassification.push({ otherId: s2.ID, reason: 'Similar topics' });
+                            sessionConflicts[s2.ID].personalClassification.push({ otherId: s1.ID, reason: 'Similar topics' });
+                        }
+                    }
+                }
+            });
+
+            // Check multi-part series room consistency
+            // Group by series name (extract base title without "Part X of Y")
+            const seriesGroups = {};
+            scheduleData.forEach(s => {
+                let title = s.Title || '';
+
+                // For CL sessions, extract display title from format "Display Title|Full Titles"
+                if (title.includes('|')) {
+                    title = title.split('|')[0];
+                }
+
+                // Check if this is a multi-part series (contains "Part X of Y" or "- Part X of Y")
+                const partMatch = title.match(/(.+?)\s*[-–—]\s*Part\s+(\d+|[IVX]+)\s+of\s+(\d+|[IVX]+)/i);
+                if (partMatch) {
+                    const baseName = partMatch[1].trim();
+                    if (!seriesGroups[baseName]) {
+                        seriesGroups[baseName] = [];
+                    }
+                    seriesGroups[baseName].push(s);
+                }
+            });
+
+            // Check if multi-part series are in same room
+            Object.keys(seriesGroups).forEach(baseName => {
+                const parts = seriesGroups[baseName];
+                if (parts.length > 1) {
+                    const rooms = [...new Set(parts.map(p => p.Room))];
+                    if (rooms.length > 1) {
+                        // Not in same room - mark as warning
+                        parts.forEach(part => {
+                            if (!sessionConflicts[part.ID].roomError) {
+                                sessionConflicts[part.ID].roomError = `Multi-part series not in same room (rooms: ${rooms.join(', ')})`;
+                            }
+                        });
+                    }
+                }
+            });
+
+            // Check series back-to-back conflicts
+            // OPTIMIZATION: Group by series first, then only check within same series
+            // This reduces from O(N²) = 4,560 pairs to O(S²) where S = sessions per series (~20-30 pairs)
+
+            // Step 1: Extract series info and group by series base name
+            const seriesByBase = new Map(); // baseName -> [{ session, info }, ...]
+            scheduleData.forEach(s => {
+                const info = extractSeriesInfo(s.Title || '');
+                if (info) {
+                    if (!seriesByBase.has(info.baseName)) {
+                        seriesByBase.set(info.baseName, []);
+                    }
+                    seriesByBase.get(info.baseName).push({ session: s, info: info });
+                }
+            });
+
+            // Step 2: Only check pairs within the same series
+            seriesByBase.forEach((seriesSessions, baseName) => {
+                // Only check if series has multiple parts
+                if (seriesSessions.length < 2) return;
+
+                for (let i = 0; i < seriesSessions.length; i++) {
+                    for (let j = i + 1; j < seriesSessions.length; j++) {
+                        const s1 = seriesSessions[i].session;
+                        const s2 = seriesSessions[j].session;
+                        const info1 = seriesSessions[i].info;
+                        const info2 = seriesSessions[j].info;
+
+                        if (hasSeriesBackToBackConflict(s1, s2, info1, info2)) {
+                            const conflict = {
+                                id1: s1.ID,
+                                id2: s2.ID,
+                                title1: s1.Title,
+                                title2: s2.Title,
+                                session1: s1.Session,
+                                session2: s2.Session
+                            };
+                            conflicts.seriesBackToBack.push(conflict);
+
+                            // Add to individual session conflict tracking
+                            if (sessionConflicts[s1.ID]) {
+                                sessionConflicts[s1.ID].seriesBackToBack.push(conflict);
+                            }
+                            if (sessionConflicts[s2.ID]) {
+                                sessionConflicts[s2.ID].seriesBackToBack.push(conflict);
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Update stats display with series back-to-back count
+            document.getElementById('seriesBackConflicts').textContent = conflicts.seriesBackToBack.length;
+
+            // Update card visuals
+            document.querySelectorAll('.session-card').forEach(card => {
+                card.classList.remove('has-classification-conflict', 'has-personal-conflict');
+                const badges = card.querySelectorAll('.conflict-badge');
+                badges.forEach(b => b.remove());
+
+                const sessionId = card.dataset.id;
+                const conflictInfo = sessionConflicts[sessionId];
+
+                if (conflictInfo && conflictInfo.personal.length > 0) {
+                    card.classList.add('has-personal-conflict');
+                    const badge = document.createElement('span');
+                    badge.className = 'conflict-badge personal';
+                    badge.textContent = 'PERSONAL';
+                    card.appendChild(badge);
+                } else if (conflictInfo && conflictInfo.roomError) {
+                    // Room error is a warning (yellow) like classification conflicts
+                    card.classList.add('has-classification-conflict');
+                    const badge = document.createElement('span');
+                    badge.className = 'conflict-badge classification';
+                    badge.textContent = 'ROOM';
+                    card.appendChild(badge);
+                } else if (conflictInfo && conflictInfo.classification.length > 0) {
+                    card.classList.add('has-classification-conflict');
+                    const badge = document.createElement('span');
+                    badge.className = 'conflict-badge classification';
+                    badge.textContent = 'CLASS';
+                    card.appendChild(badge);
+                }
+            });
+
+            // Update all stats counters
+            updateStats();
+
+            // Debug: Log conflict counts
+            console.log('🔍 Conflict Detection Results:', {
+                personal: conflicts.personal.length,
+                classification: conflicts.classification.length,
+                personalClassification: conflicts.personalClassification.length,
+                seriesBackToBack: conflicts.seriesBackToBack.length,
+                totalSessionConflicts: Object.keys(sessionConflicts).length
+            });
+
+            // Reapply active filter if one is set (for drag-and-drop scenarios)
+            if (activeConflictFilter) {
+                filterConflictType(activeConflictFilter);
+            } else {
+                clearConflictFilter();
+            }
+        }
+
+        function hasClassificationOverlap(cache1, cache2) {
+            return cache1.classifications.some(c => cache2.classifications.includes(c));
+        }
+
+        function hasPersonOverlap(cache1, cache2) {
+            const p1 = [...cache1.speakers, ...cache1.organizers];
+            const p2 = [...cache2.speakers, ...cache2.organizers];
+            return p1.some(p => p2.includes(p));
+        }
+
+        function hasPersonalClassificationConflict(s1, s2, cache1, cache2) {
+            // Only check between regular MS and CL-minisymposium
+            const isS1RegularMS = s1.ID && !s1.ID.startsWith('CL');
+            const isS2RegularMS = s2.ID && !s2.ID.startsWith('CL');
+            const isS1CLMS = s1.ID && s1.ID.startsWith('CL');
+            const isS2CLMS = s2.ID && s2.ID.startsWith('CL');
+
+            // Must be one regular MS and one CL-minisymposium
+            if (!((isS1RegularMS && isS2CLMS) || (isS1CLMS && isS2RegularMS))) {
+                return false;
+            }
+
+            // Use pre-parsed topics from cache
+            if (!cache1.hasTopics || !cache2.hasTopics) {
+                return false;
+            }
+
+            // Check for exact matches using cached topics
+            return cache1.topics.some(t1 => cache2.topics.includes(t1));
+        }
+
+        // ============================================================================
+        // SERIES CONFLICT DETECTION (ported from Rust conflict_detection.rs)
+        // ============================================================================
+
+        // Convert Roman numeral to integer (same logic as Rust roman_to_int)
+        function romanToInt(roman) {
+            const romanUpper = roman.toUpperCase();
+            const romanValues = {
+                'I': 1, 'V': 5, 'X': 10, 'L': 50,
+                'C': 100, 'D': 500, 'M': 1000
+            };
+
+            let total = 0;
+            let prevValue = 0;
+
+            // Process right to left (reverse)
+            for (let i = romanUpper.length - 1; i >= 0; i--) {
+                const ch = romanUpper[i];
+                const value = romanValues[ch];
+
+                if (value === undefined) {
+                    return null; // Invalid character
+                }
+
+                if (value < prevValue) {
+                    total -= value; // Subtraction rule (IV = 4, IX = 9)
+                } else {
+                    total += value;
+                }
+                prevValue = value;
+            }
+
+            return total;
+        }
+
+        // Get chronological order of time period (same as Rust get_period_order)
+        function getPeriodOrder(period) {
+            if (period.includes('TUE First')) return 0;
+            if (period.includes('TUE Second')) return 1;
+            if (period.includes('WED First')) return 2;
+            if (period.includes('WED Second')) return 3;
+            if (period.includes('THU First')) return 4;
+            if (period.includes('THU Second')) return 5;
+            if (period.includes('FRI First')) return 6;
+            if (period.includes('FRI Second')) return 7;
+            return 999; // Unknown
+        }
+
+        // Extract series info from title (same logic as Rust extract_series_info)
+        function extractSeriesInfo(title) {
+            // Patterns to match (same order as Rust implementation)
+            const patterns = [
+                { regex: / - Part ([IVXLCDM]+) of ([IVXLCDM]+)/i, isRoman: true },
+                { regex: / - Part (\d+) of (\d+)/i, isRoman: false },
+                { regex: / - Part ([IVXLCDM]+)$/i, isRoman: true },
+                { regex: / - Part (\d+)$/i, isRoman: false },
+                { regex: /Part ([IVXLCDM]+) of ([IVXLCDM]+)/i, isRoman: true },
+                { regex: /Part (\d+) of (\d+)/i, isRoman: false },
+                { regex: /Part ([IVXLCDM]+)$/i, isRoman: true },
+                { regex: /Part (\d+)$/i, isRoman: false },
+            ];
+
+            for (const pattern of patterns) {
+                const match = title.match(pattern.regex);
+                if (match) {
+                    const partStr = match[1];
+                    let partNum;
+
+                    if (pattern.isRoman) {
+                        partNum = romanToInt(partStr);
+                        if (partNum === null) continue; // Invalid Roman numeral
+                    } else {
+                        partNum = parseInt(partStr, 10);
+                        if (isNaN(partNum)) continue;
+                    }
+
+                    // Extract base title by removing the matched part
+                    const baseTitle = title.replace(match[0], '').trim();
+
+                    if (partNum > 0 && baseTitle.length > 0) {
+                        // Normalize base title: remove spaces and lowercase (same as Rust normalize_exact)
+                        const normalizedTitle = baseTitle.replace(/\s+/g, '').toLowerCase();
+                        return { baseName: normalizedTitle, partNumber: partNum };
+                    }
+                }
+            }
+
+            return null; // No series info found
+        }
+
+        // Check if two sessions have series back-to-back conflict (same logic as Rust)
+        // Accepts pre-extracted series info to avoid repeated regex parsing
+        function hasSeriesBackToBackConflict(s1, s2, info1, info2) {
+            // Both must be part of series
+            if (!info1 || !info2) {
+                return false;
+            }
+
+            const period1 = s1.Session || '';
+            const period2 = s2.Session || '';
+
+            // Must be same series (same base name)
+            if (info1.baseName !== info2.baseName) {
+                return false;
+            }
+
+            // Only check CONSECUTIVE parts
+            const partDiff = Math.abs(info1.partNumber - info2.partNumber);
+            if (partDiff !== 1) {
+                return false; // Not consecutive parts
+            }
+
+            const order1 = getPeriodOrder(period1);
+            const order2 = getPeriodOrder(period2);
+
+            // Parallel conflict: same period
+            if (order1 === order2) {
+                return true;
+            }
+
+            // Timing conflict: consecutive parts should be in adjacent periods
+            const periodDiff = Math.abs(order1 - order2);
+            return periodDiff !== 1; // True if NOT adjacent
+        }
+
+        function updateStats() {
+            // Count series sessions with conflicts (not scheduled in same room)
+            let seriesConflictCount = 0;
+            scheduleData.forEach(s => {
+                if (sessionConflicts[s.ID] && sessionConflicts[s.ID].roomError) {
+                    seriesConflictCount++;
+                }
+            });
+
+            document.getElementById('totalSessions').textContent = scheduleData.length;
+            document.getElementById('classConflicts').textContent = conflicts.classification.length;
+            document.getElementById('personalConflicts').textContent = conflicts.personal.length;
+            document.getElementById('personalClassificationConflicts').textContent = conflicts.personalClassification.length;
+            // Series room conflicts are displayed via seriesConflictCount
+            document.getElementById('seriesRoomConflicts').textContent = seriesConflictCount;
+            // Series back-to-back conflicts are updated in detectConflictsLocal()
+        }
+
+        function showConflicts() {
+            const modal = document.getElementById('conflictModal');
+            const list = document.getElementById('conflictList');
+            list.innerHTML = '';
+
+            if (conflicts.classification.length === 0 && conflicts.personal.length === 0 && conflicts.personalClassification.length === 0) {
+                list.innerHTML = '<li style="padding: 20px; text-align: center; color: #16a34a;">No conflicts detected!</li>';
+            } else {
+                conflicts.personal.forEach(c => {
+                    const li = document.createElement('li');
+                    li.className = 'conflict-item';
+                    li.innerHTML = `
+                        <div class="conflict-type">Personal Conflict</div>
+                        <div class="conflict-details">Session ${c.session}: ${c.id1} and ${c.id2}<br>
+                        ${c.person}</div>
+                    `;
+                    list.appendChild(li);
+                });
+
+                conflicts.classification.forEach(c => {
+                    const li = document.createElement('li');
+                    li.className = 'conflict-item classification';
+                    li.innerHTML = `
+                        <div class="conflict-type">Classification Conflict</div>
+                        <div class="conflict-details">Session ${c.session}: ${c.id1} and ${c.id2}</div>
+                    `;
+                    list.appendChild(li);
+                });
+
+                conflicts.personalClassification.forEach(c => {
+                    const li = document.createElement('li');
+                    li.className = 'conflict-item';
+                    li.innerHTML = `
+                        <div class="conflict-type" style="background: #FEE2E2; color: #DC2626;">Personal-Classification Conflict</div>
+                        <div class="conflict-details">Session ${c.session}: ${c.id1} and ${c.id2}<br>
+                        ${c.reason}</div>
+                    `;
+                    list.appendChild(li);
+                });
+            }
+
+            modal.classList.add('show');
+        }
+
+        function closeConflictModal() {
+            document.getElementById('conflictModal').classList.remove('show');
+        }
+
+        async function downloadSchedule() {
+            // If we have a modified filename from a previous save, use it
+            if (modifiedFilename) {
+                window.location.href = `/download/${modifiedFilename}`;
+                return;
+            }
+
+            // If no modifications, download the original file
+            if (!isModified) {
+                window.location.href = `/download/${filename}`;
+                return;
+            }
+
+            // If modified but not yet saved, send the modified schedule to the server
+            try {
+                const response = await fetch('/api/save-modified', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        sessions: scheduleData,
+                        original_filename: filename
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Store the modified filename for future downloads
+                    modifiedFilename = result.filename;
+                    // Download the modified file
+                    window.location.href = result.download_url;
+                    // Reset the modified flag since changes are now saved
+                    isModified = false;
+                } else {
+                    alert('Failed to save modified schedule: ' + (result.error || 'Unknown error'));
+                }
+            } catch (error) {
+                alert('Error saving modified schedule: ' + error.message);
+            }
+        }
+
+        function showMetadata() {
+            const modal = document.getElementById('metadataModal');
+
+            // Calculate metadata
+            const rooms = [...new Set(scheduleData.map(s => s.Room))].sort();
+            const sessions = [...new Set(scheduleData.map(s => s.Session))];
+
+            // Count unique minisymposia IDs (not session count)
+            const uniqueMS = new Set();
+            const uniqueCL = new Set();
+
+            scheduleData.forEach(s => {
+                if (s.ID && typeof s.ID === 'string') {
+                    const id = s.ID.trim();
+
+                    // CL IDs: format "CL-900xxx"
+                    // Each CL-900xxx is a unique CL minisymposium
+                    if (id.startsWith('CL-')) {
+                        uniqueCL.add(id);
+                    }
+                    // Regular MS IDs: numeric IDs like 85901, 86028, 87056
+                    // Each numeric ID is a unique regular minisymposium
+                    else if (/^\d+$/.test(id)) {
+                        uniqueMS.add(id);
+                    }
+                }
+            });
+
+            const msCount = uniqueMS.size;
+            const clCount = uniqueCL.size;
+
+            // Stats section
+            document.getElementById('metadataStats').innerHTML = `
+                <div class="metadata-item"><strong>Total Sessions Scheduled:</strong> ${scheduleData.length}</div>
+                <div class="metadata-item"><strong>Regular Minisymposia:</strong> ${msCount}</div>
+                <div class="metadata-item"><strong>CL-Minisymposia:</strong> ${clCount}</div>
+                <div class="metadata-item"><strong>Classification Conflicts:</strong> ${conflicts.classification.length}</div>
+                <div class="metadata-item"><strong>Personal Conflicts:</strong> ${conflicts.personal.length}</div>
+            `;
+
+            // Room info
+            let roomsHTML = '';
+            rooms.forEach(room => {
+                const roomSessions = scheduleData.filter(s => s.Room === room);
+                roomsHTML += `<div class="metadata-item"><strong>Room ${room}:</strong> ${roomSessions.length} sessions</div>`;
+            });
+            document.getElementById('metadataRooms').innerHTML = roomsHTML;
+
+            // Session distribution
+            let distHTML = '';
+            sessions.forEach(session => {
+                const sessionCount = scheduleData.filter(s => s.Session === session).length;
+                distHTML += `<div class="metadata-item"><strong>${session}:</strong> ${sessionCount} sessions</div>`;
+            });
+            document.getElementById('metadataDistribution').innerHTML = distHTML;
+
+            modal.classList.add('show');
+        }
+
+        function closeMetadataModal() {
+            document.getElementById('metadataModal').classList.remove('show');
+        }
+
+        // Constraints Configuration Functions
+        function showConstraintsModal() {
+            loadSavedConstraints();
+            const modal = document.getElementById('constraintsModal');
+            modal.classList.add('show');
+        }
+
+        function closeConstraintsModal() {
+            document.getElementById('constraintsModal').classList.remove('show');
+        }
+
+        function loadSavedConstraints() {
+            // Load saved constraints from localStorage
+            let savedConstraints = localStorage.getItem('constraintsConfig');
+            let config;
+
+            if (savedConstraints) {
+                config = JSON.parse(savedConstraints);
+            } else {
+                // Default configuration (matches test_hierarchical defaults)
+                config = {
+                    strict_hierarchy: true,
+                    priorities: {
+                        personal: 1,
+                        classification: 5,
+                        personal_classification: 2,
+                        series_back: 3,
+                        series_room: 4
+                    }
+                };
+            }
+
+            // Set strict mode checkbox
+            document.getElementById('strictModeToggle').checked = config.strict_hierarchy !== false;
+
+            // Set priority dropdowns
+            if (config.priorities) {
+                document.getElementById('priority_personal').value = config.priorities.personal || 1;
+                document.getElementById('priority_classification').value = config.priorities.classification || 5;
+                document.getElementById('priority_personal_classification').value = config.priorities.personal_classification || 2;
+                document.getElementById('priority_series_back').value = config.priorities.series_back || 3;
+                document.getElementById('priority_series_room').value = config.priorities.series_room || 4;
+            }
+        }
+
+        function loadDefaultConstraints() {
+            // Load default configuration (matches test_hierarchical defaults)
+            document.getElementById('strictModeToggle').checked = true;
+            document.getElementById('priority_personal').value = 1;
+            document.getElementById('priority_classification').value = 5;
+            document.getElementById('priority_personal_classification').value = 2;
+            document.getElementById('priority_series_back').value = 3;
+            document.getElementById('priority_series_room').value = 4;
+        }
+
+        function saveConstraints() {
+            // Collect priority values and strict mode
+            const config = {
+                strict_hierarchy: document.getElementById('strictModeToggle').checked,
+                priorities: {
+                    personal: parseInt(document.getElementById('priority_personal').value),
+                    classification: parseInt(document.getElementById('priority_classification').value),
+                    personal_classification: parseInt(document.getElementById('priority_personal_classification').value),
+                    series_back: parseInt(document.getElementById('priority_series_back').value),
+                    series_room: parseInt(document.getElementById('priority_series_room').value)
+                }
+            };
+
+            // Save to localStorage
+            localStorage.setItem('constraintsConfig', JSON.stringify(config));
+
+            console.log('Saved config:', config);
+
+            // Close modal
+            closeConstraintsModal();
+
+            // Show success message
+            showNotification('Configuration saved! Use "Regenerate Schedule" to apply.', 'success');
+        }
+
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 16px 24px;
+                background: ${type === 'success' ? '#10B981' : '#3B82F6'};
+                color: white;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                font-weight: 500;
+                z-index: 10000;
+                animation: slideIn 0.3s ease-out;
+            `;
+            notification.textContent = message;
+
+            // Add to page
+            document.body.appendChild(notification);
+
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-in forwards';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Add notification animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            @keyframes slideOut {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Load on page load
+        loadSchedule();
+    </script>
+
+    <!-- Developer Footer -->
+    <footer style="
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 12px 20px;
+        text-align: center;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        z-index: 1000;
+        border-top: 1px solid rgba(255,255,255,0.1);
+    ">
+        <div style="color: white; font-size: 14px; font-weight: 500;">
+            Developed by
+            <a href="https://www.linkedin.com/in/mohamed-ghayad-1812151b0/"
+               target="_blank"
+               rel="noopener noreferrer"
+               style="
+                   color: white;
+                   text-decoration: none;
+                   font-weight: 600;
+                   padding: 4px 8px;
+                   border-radius: 4px;
+                   transition: all 0.3s ease;
+                   display: inline-block;
+                   background: rgba(255,255,255,0.1);
+               "
+               onmouseover="this.style.background='rgba(255,255,255,0.2)'; this.style.transform='translateY(-2px)'"
+               onmouseout="this.style.background='rgba(255,255,255,0.1)'; this.style.transform='translateY(0)'">
+                Mohamed Ghayad
+            </a>
+        </div>
+    </footer>
+
+    <!-- Add padding to body to prevent content from being hidden behind footer -->
+    <style>
+        body {
+            padding-bottom: 60px;
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,45 @@
+# Rust build artifacts
+/target/
+Cargo.lock
+**/*.rs.bk
+
+# Generated and temporary files
+generated/
+uploads/
+inspect_excel_temp.rs
+inspect_excel.rs
+examples/
+
+# Docker data directories (persistent storage)
+data/
+
+# IDE and system files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.vscode/
+.idea/
+
+# Deployment and platform files
+.vercel/
+.fly/
+fly.toml.local
+
+# Data files (test Excel files)
+*.xlsx
+*.xls
+~$*.xlsx
+~$*.xls
+
+# Test and analysis output files
+*.json
+*.py
+check_notes.rs
+--pretty
+
+# Development files
+.claude/

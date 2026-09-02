@@ -1,0 +1,13 @@
+services:
+  conference-scheduler:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      # Persist uploaded files and generated schedules
+      - ./data/uploads:/app/uploads
+      - ./data/generated:/app/generated
+    environment:
+      - RUST_LOG=info
+    restart: unless-stopped
+    container_name: conference-scheduler
