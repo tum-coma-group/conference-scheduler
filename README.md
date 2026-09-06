@@ -325,3 +325,7 @@ Expected columns:
 6. **Mathematically sound**: Given that 6 classifications appear >9 times, perfect classification separation is impossible
 
 The series-aware greedy approach with conflict minimization provides an optimal practical solution for this highly constrained scheduling problem while ensuring excellent attendee experience for multi-part presentations.
+
+## License
+
+[MIT](LICENSE) © 2026 TUM COMA Group

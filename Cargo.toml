@@ -2,6 +2,7 @@
 name = "conference_scheduler"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
 
 [dependencies]
 calamine = "0.31.0"
